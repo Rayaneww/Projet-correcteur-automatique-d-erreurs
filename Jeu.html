@@ -1,0 +1,69 @@
+
+<html>
+<head>
+ <meta charset="UTF-8">
+<title>Qui est-ce ?</title>
+<h1>Qui est-ce ?</h1>
+</head>
+
+
+<body>
+<div id="main">
+<!-- affichage des 16 cartes du jeu  -->
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/0000000.png> 
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/0001111.png> 
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/0010011.png> 
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/0011100.png> 
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/0100011.png> 
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/0100101.png> 
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/0101010.png> 
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/0110110.png> 
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/0111001.png>
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/1011010.png>
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/1000110.png> 
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/1001001.png> 
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/1010101.png>
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/1101100.png>
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/1110000.png> 
+<img src = http://btsio.org/2025/lebrunm/Qui-est-ce/1111111.png>
+
+
+<!-- Questions  -->
+<h2 id="Q1">1. A-t-il des lunettes ?</h2>
+<input id="b1O" type="button" value="Oui" onclick="oui(0)">
+<input id="b1N" type="button" value="Non" onclick="non(0)"><br><br>
+
+<h2 id="Q2">2. A-t-il une moustache ?</h2>
+<input id="b2O" type="button" value="Oui" onclick="oui(1)">
+<input id="b2N" type="button" value="Non" onclick="non(1)"><br><br>
+
+<h2 id="Q3">3. A-t-il un chapeau ?</h2>
+<input id="b3O" type="button" value="Oui" onclick="oui(2)">
+<input id="b3N" type="button" value="Non" onclick="non(2)"><br><br>
+
+<h2 id="Q4">4. A-t-il des cheveux ?</h2>
+<input id="b4O" type="button" value="Oui" onclick="oui(3)">
+<input id="b4N" type="button" value="Non" onclick="non(3)"><br><br>
+
+<h2 id="Q5">5. A-t-il une boucle d'oreille ?</h2>
+<input id="b5O" type="button" value="Oui" onclick="oui(4)">
+<input id="b5N" type="button" value="Non" onclick="non(4)"><br><br>
+
+<h2 id="Q6">6. A-t-il une barbe ?</h2>
+<input id="b6O" type="button" value="Oui" onclick="oui(5)">
+<input id="b6N" type="button" value="Non" onclick="non(5)"><br><br>
+
+<h2 id="Q7">7. A-t-il un noeud papillon ?</h2>
+<input id="b7O" type="button" value="Oui" onclick="oui(6)">
+<input id="b7N" type="button" value="Non" onclick="non(6)"><br><br>
+</div>
+
+
+<!-- réponse  -->
+<div id="bas">
+<p>
+<INPUT id="bouton" type="button" value="Cliquez pour avoir la réponse" onclick="affiche(m)"></p>
+<h2 id="reponse"></h2>
+<p><INPUT id="bouton" type="button" value="Cliquez pour rejouer" onclick="rejouer(T)">
+</p>
+</div>
