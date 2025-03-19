@@ -93,6 +93,7 @@
         $masques1 = "1010101";
         $masques2 = "0110110";
         $masques3 = "0001111";
+        $message = ""; // Message d'erreur
 
         // Vérification du formulaire
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -109,28 +110,47 @@
             // Résultat du contrôle des syndromes
             $resultat = $syndrome1 . $syndrome2 . $syndrome3;
 
-            // Affichage du message basé sur le syndrome
-            if ($resultat == "100") {
-                echo "Vous avez menti sur la question 1";
-            } elseif ($resultat == "010") {
-                echo "Vous avez menti sur la question 2";
-            } elseif ($resultat == "110") {
-                echo "Vous avez menti sur la question 3";
-            } elseif ($resultat == "001") {
-                echo "Vous avez menti sur la question 4";
-            } elseif ($resultat == "111") {
-                echo "Vous avez menti sur la question 5";
-            } elseif ($resultat == "011") {
-                echo "Vous avez menti sur la question 6";
-            } elseif ($resultat == "101") {
-                echo "Vous avez menti sur la question 7";
-            } else {
-                echo "Aucun mensonge détecté ou vous avez menti 2 fois.";
+            // Vérifier quel est le mensonge et afficher un message
+            switch ($resultat) {
+                case "100":
+                    $message = "Vous avez menti sur la question 1.";
+                    $bits[0] = (string)(1 - (int)$bits[0]); // Correction de l'erreur
+                    break;
+                case "010":
+                    $message = "Vous avez menti sur la question 2.";
+                    $bits[1] = (string)(1 - (int)$bits[1]); // Correction de l'erreur
+                    break;
+                case "110":
+                    $message = "Vous avez menti sur la question 3.";
+                    $bits[2] = (string)(1 - (int)$bits[2]); // Correction de l'erreur
+                    break;
+                case "001":
+                    $message = "Vous avez menti sur la question 4.";
+                    $bits[3] = (string)(1 - (int)$bits[3]); // Correction de l'erreur
+                    break;
+                case "111":
+                    $message = "Vous avez menti sur la question 5.";
+                    $bits[4] = (string)(1 - (int)$bits[4]); // Correction de l'erreur
+                    break;
+                case "011":
+                    $message = "Vous avez menti sur la question 6.";
+                    $bits[5] = (string)(1 - (int)$bits[5]); // Correction de l'erreur
+                    break;
+                case "101":
+                    $message = "Vous avez menti sur la question 7.";
+                    $bits[6] = (string)(1 - (int)$bits[6]); // Correction de l'erreur
+                    break;
+                default:
+                    $message = "Aucun mensonge détecté ou vous avez menti 2 fois.";
+                    break;
             }
 
             // Mettre à jour l'image
             if (in_array($bits . ".png", $images)) {
                 $highlightedImage = $bits . ".png";
+            } else {
+                // Si le résultat corrigé ne correspond pas à une image existante, afficher l'image d'erreur
+                $highlightedImage = "Erreur.png"; // Choisir une image d'erreur
             }
         }
 
@@ -147,9 +167,11 @@
     <?php
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<h2 id='reponse'>Personne trouvée : $highlightedImage</h2>";
+        echo "<p>$message</p>";  // Afficher le message d'erreur ou de succès
     }
     ?>
 </div>
 
 </body>
 </html>
+
