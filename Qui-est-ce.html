@@ -108,7 +108,7 @@
             $syndrome3 = (int) $bits[0] ^ (int) $bits[1] ^ (int) $bits[2] ^ (int) $bits[3] ^ (int) $bits[4] ^ (int) $bits[5] ^ (int) $bits[6];
 
             // Résultat du contrôle des syndromes
-            $resultat = $syndrome1 . $syndrome2 . $syndrome3;
+             $resultat = (string)$syndrome1 . (string)$syndrome2 . (string)$syndrome3;
 
             // Vérifier quel est le mensonge et afficher un message
             switch ($resultat) {
