@@ -90,6 +90,10 @@
 
         $highlightedImage = "";
         $bits = "";
+        $masques1 = "1010101"; // Masque pour syndrome 1
+        $masques2 = "0110110"; // Masque pour syndrome 2
+        $masques3 = "0001111"; // Masque pour syndrome 3
+        $message = ""; // Message d'erreur
 
         // Vérification du formulaire
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -98,33 +102,76 @@
                 $bits .= isset($_POST['q' . $i]) ? $_POST['q' . $i] : "0";
             }
 
-            // Appliquer les masques et vérifier les syndromes
-            $syndrome1 = (int) $bits[0] ^ (int) $bits[1] ^ (int) $bits[2] ^ (int) $bits[3] ^ (int) $bits[4] ^ (int) $bits[5] ^ (int) $bits[6];
-            $syndrome2 = (int) $bits[0] ^ (int) $bits[1] ^ (int) $bits[2] ^ (int) $bits[3] ^ (int) $bits[4] ^ (int) $bits[5] ^ (int) $bits[6];
-            $syndrome3 = (int) $bits[0] ^ (int) $bits[1] ^ (int) $bits[2] ^ (int) $bits[3] ^ (int) $bits[4] ^ (int) $bits[5] ^ (int) $bits[6];
+            // Calcul des syndromes
+            $syndrome1 = 0;
+            $syndrome2 = 0;
+            $syndrome3 = 0;
+
+            // Calcul du syndrome 1
+            for ($i = 0; $i < 7; $i++) {
+                if ($masques1[$i] == '1') {
+                    $syndrome1 ^= (int)$bits[$i]; // XOR pour la parité
+                }
+            }
+
+            // Calcul du syndrome 2
+            for ($i = 0; $i < 7; $i++) {
+                if ($masques2[$i] == '1') {
+                    $syndrome2 ^= (int)$bits[$i]; // XOR pour la parité
+                }
+            }
+
+            // Calcul du syndrome 3
+            for ($i = 0; $i < 7; $i++) {
+                if ($masques3[$i] == '1') {
+                    $syndrome3 ^= (int)$bits[$i]; // XOR pour la parité
+                }
+            }
 
             // Résultat du contrôle des syndromes
             $resultat = (string)$syndrome1 . (string)$syndrome2 . (string)$syndrome3;
 
-            // Tableau des messages associés aux syndromes
-            $messages = [
-                "100" => "Vous avez menti sur la question 1",
-                "010" => "Vous avez menti sur la question 2",
-                "110" => "Vous avez menti sur la question 3",
-                "001" => "Vous avez menti sur la question 4",
-                "111" => "Vous avez menti sur la question 5",
-                "011" => "Vous avez menti sur la question 6",
-                "101" => "Vous avez menti sur la question 7",
-                "default" => "Aucun mensonge détecté ou vous avez menti 2 fois."
-            ];
-
-            // Affichage du message basé sur le syndrome
-            $message = isset($messages[$resultat]) ? $messages[$resultat] : $messages["default"];
-            echo $message;
+            // Vérifier quel est le mensonge et afficher un message
+            switch ($resultat) {
+                case "100":
+                    $message = "Vous avez menti sur la question 1.";
+                    $bits[0] = (string)(1 - (int)$bits[0]); // Correction de l'erreur
+                    break;
+                case "010":
+                    $message = "Vous avez menti sur la question 2.";
+                    $bits[1] = (string)(1 - (int)$bits[1]); // Correction de l'erreur
+                    break;
+                case "110":
+                    $message = "Vous avez menti sur la question 3.";
+                    $bits[2] = (string)(1 - (int)$bits[2]); // Correction de l'erreur
+                    break;
+                case "001":
+                    $message = "Vous avez menti sur la question 4.";
+                    $bits[3] = (string)(1 - (int)$bits[3]); // Correction de l'erreur
+                    break;
+                case "111":
+                    $message = "Vous avez menti sur la question 5.";
+                    $bits[4] = (string)(1 - (int)$bits[4]); // Correction de l'erreur
+                    break;
+                case "011":
+                    $message = "Vous avez menti sur la question 6.";
+                    $bits[5] = (string)(1 - (int)$bits[5]); // Correction de l'erreur
+                    break;
+                case "101":
+                    $message = "Vous avez menti sur la question 7.";
+                    $bits[6] = (string)(1 - (int)$bits[6]); // Correction de l'erreur
+                    break;
+                default:
+                    $message = "Aucun mensonge détecté ou vous avez menti 2 fois.";
+                    break;
+            }
 
             // Mettre à jour l'image
             if (in_array($bits . ".png", $images)) {
                 $highlightedImage = $bits . ".png";
+            } else {
+                // Si le résultat corrigé ne correspond pas à une image existante, afficher l'image d'erreur
+                $highlightedImage = "Erreur.png"; // Choisir une image d'erreur
             }
         }
 
@@ -141,10 +188,12 @@
     <?php
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<h2 id='reponse'>Personne trouvée : $highlightedImage</h2>";
+        echo "<p>$message</p>";  // Afficher le message d'erreur ou de succès
     }
     ?>
 </div>
 
 </body>
 </html>
+
 
