@@ -90,9 +90,6 @@
 
         $highlightedImage = "";
         $bits = "";
-        $masques1 = "1010101";
-        $masques2 = "0110110";
-        $masques3 = "0001111";
 
         // Vérification du formulaire
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -109,24 +106,21 @@
             // Résultat du contrôle des syndromes
             $resultat = (string)$syndrome1 . (string)$syndrome2 . (string)$syndrome3;
 
+            // Tableau des messages associés aux syndromes
+            $messages = [
+                "100" => "Vous avez menti sur la question 1",
+                "010" => "Vous avez menti sur la question 2",
+                "110" => "Vous avez menti sur la question 3",
+                "001" => "Vous avez menti sur la question 4",
+                "111" => "Vous avez menti sur la question 5",
+                "011" => "Vous avez menti sur la question 6",
+                "101" => "Vous avez menti sur la question 7",
+                "default" => "Aucun mensonge détecté ou vous avez menti 2 fois."
+            ];
+
             // Affichage du message basé sur le syndrome
-            if ($resultat == "100") {
-                echo "Vous avez menti sur la question 1";
-            } elseif ($resultat == "010") {
-                echo "Vous avez menti sur la question 2";
-            } elseif ($resultat == "110") {
-                echo "Vous avez menti sur la question 3";
-            } elseif ($resultat == "001") {
-                echo "Vous avez menti sur la question 4";
-            } elseif ($resultat == "111") {
-                echo "Vous avez menti sur la question 5";
-            } elseif ($resultat == "011") {
-                echo "Vous avez menti sur la question 6";
-            } elseif ($resultat == "101") {
-                echo "Vous avez menti sur la question 7";
-            } else {
-                echo "Aucun mensonge détecté ou vous avez menti 2 fois.";
-            }
+            $message = isset($messages[$resultat]) ? $messages[$resultat] : $messages["default"];
+            echo $message;
 
             // Mettre à jour l'image
             if (in_array($bits . ".png", $images)) {
@@ -153,3 +147,4 @@
 
 </body>
 </html>
+
