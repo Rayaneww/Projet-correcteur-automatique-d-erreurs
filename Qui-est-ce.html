@@ -30,6 +30,9 @@
             width: 100px;
             height: auto;
         }
+        .highlight {
+            border: 5px solid red;
+        }
         .bas {
             text-align: center;
             margin-top: 20px;
@@ -77,9 +80,28 @@
 
     <div class="images">
         <?php
-        $images = ["0000000.png", "0001111.png", "0010011.png", "0011100.png", "0100011.png", "0100101.png", "0101010.png", "0110110.png", "0111001.png", "1011010.png", "1000110.png", "1001001.png", "1010101.png", "1101100.png", "1110000.png", "1111111.png"];
+        $images = [
+            "0000000.png", "0001111.png", "0010011.png", "0011100.png",
+            "0100011.png", "0100101.png", "0101010.png", "0110110.png",
+            "0111001.png", "1011010.png", "1000110.png", "1001001.png",
+            "1010101.png", "1101100.png", "1110000.png", "1111111.png"
+        ];
+        
+        $highlightedImage = "";
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $bits = "";
+            for ($i = 1; $i <= 7; $i++) {
+                $bits .= isset($_POST['q' . $i]) ? $_POST['q' . $i] : "0";
+            }
+            
+            if (in_array($bits . ".png", $images)) {
+                $highlightedImage = $bits . ".png";
+            }
+        }
+        
         foreach ($images as $image) {
-            echo "<img src='http://btsio.org/2025/lebrunm/Qui-est-ce/$image'>";
+            $class = ($image === $highlightedImage) ? "class='highlight'" : "";
+            echo "<img src='http://btsio.org/2025/lebrunm/Qui-est-ce/$image' $class alt='$image'>";
         }
         ?>
     </div>
@@ -88,36 +110,11 @@
 <div class="bas">
     <?php
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $bits = "";
-        for ($i = 1; $i <= 7; $i++) {
-            $bits .= isset($_POST['q' . $i]) ? $_POST['q' . $i] : "0";
-        }
-
-        $masques1 = "1010101";
-        $masques2 = "0110110";
-        $masques3 = "0001111";
-
-        $syndrome1 = (int)$bits[0] ^ (int)$bits[1] ^ (int)$bits[2] ^ (int)$bits[3] ^ (int)$bits[4] ^ (int)$bits[5] ^ (int)$bits[6];
-        $syndrome2 = (int)$bits[0] ^ (int)$bits[1] ^ (int)$bits[2] ^ (int)$bits[3] ^ (int)$bits[4] ^ (int)$bits[5] ^ (int)$bits[6];
-        $syndrome3 = (int)$bits[0] ^ (int)$bits[1] ^ (int)$bits[2] ^ (int)$bits[3] ^ (int)$bits[4] ^ (int)$bits[5] ^ (int)$bits[6];
-
-        $resultat = "$syndrome1$syndrome2$syndrome3";
-
-        echo "<h2 id='reponse'>";
-        switch ($resultat) {
-            case "100": echo "Vous avez menti sur la question 1"; break;
-            case "010": echo "Vous avez menti sur la question 2"; break;
-            case "110": echo "Vous avez menti sur la question 3"; break;
-            case "001": echo "Vous avez menti sur la question 4"; break;
-            case "111": echo "Vous avez menti sur la question 5"; break;
-            case "011": echo "Vous avez menti sur la question 6"; break;
-            case "101": echo "Vous avez menti sur la question 7"; break;
-            default: echo "Aucun mensonge détecté ou vous avez menti 2 fois."; break;
-        }
-        echo "</h2>";
+        echo "<h2 id='reponse'>Personne trouvée : $highlightedImage</h2>";
     }
     ?>
 </div>
 
 </body>
 </html>
+
